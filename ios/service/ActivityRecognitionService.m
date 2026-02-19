@@ -257,8 +257,11 @@
                     content.badge = @(locationCount);
                 }
                 
-                // Use unique identifier for each notification (so they stack)
-                NSString *identifier = [NSString stringWithFormat:@"DebugNotification_%ld", (long)([[NSDate date] timeIntervalSince1970] * 1000)];
+                // Sabit ID: aynı başlık = aynı bildirim güncellenir, yığılma olmaz
+                NSString *safeTitle = [title stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+                safeTitle = [[safeTitle componentsSeparatedByCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]] componentsJoinedByString:@""];
+                if (safeTitle.length == 0) { safeTitle = @"Debug"; }
+                NSString *identifier = [NSString stringWithFormat:@"DebugNotification_%@", safeTitle];
                 
                 UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier
                                                                                       content:content
