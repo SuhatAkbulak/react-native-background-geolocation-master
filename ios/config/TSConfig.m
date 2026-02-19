@@ -94,6 +94,10 @@ static NSString *const KEY_CONFIG = @"config";
 
 @implementation TSConfig
 
+// Explicit ivar names so underscore-named properties use _title (not __title)
+@synthesize _title = _title, _text = _text, _smallIcon = _smallIcon, _largeIcon = _largeIcon;
+@synthesize _color = _color, _priority = _priority, _channelName = _channelName, _channelId = _channelId;
+
 + (instancetype)sharedInstance {
     static TSConfig *instance = nil;
     static dispatch_once_t onceToken;
