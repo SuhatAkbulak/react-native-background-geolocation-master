@@ -1,0 +1,59 @@
+# Build outputs
+android/build/
+android/.gradle/
+ios/build/
+ios/Pods/
+ios/*.xcworkspace
+ios/*.xcodeproj
+
+# Development files
+node_modules/
+.git/
+.gitignore
+*.log
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Test files
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Documentation (keep README.md)
+docs/
+*.md
+!README.md
+
+# Example
+example/
+TestApp/
+
+# Temporary files
+*.tmp
+*.temp
+Untitled
+
+# Source maps
+*.map
+
+# TypeScript
+tsconfig.json
+tsconfig.build.json
+
+# Package manager
+package-lock.json
+yarn.lock
+
+# CI/CD
+.github/
+.travis.yml
+.circleci/
+

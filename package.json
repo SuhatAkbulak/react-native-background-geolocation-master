@@ -1,0 +1,41 @@
+{
+  "name": "react-native-background-location",
+  "version": "1.0.0",
+  "description": "Cross-platform, Transistorsoft-style background location tracking for React Native",
+  "main": "src/index.tsx",
+  "types": "src/index.tsx",
+  "license": "MIT",
+  "author": "Your Name <your.email@example.com>",
+  "homepage": "https://github.com/yourname/react-native-background-location",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourname/react-native-background-location.git"
+  },
+  "keywords": [
+    "react-native",
+    "background-location",
+    "geolocation",
+    "location-tracking",
+    "gps",
+    "android",
+    "ios",
+    "transistorsoft"
+  ],
+  "peerDependencies": {
+    "react": "*",
+    "react-native": ">=0.60.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.25.0"
+  },
+  "devDependencies": {
+    "@types/react": "*",
+    "@types/react-native": "*",
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "prepare": "cd android && ./gradlew clean"
+  }
+}
+
+
