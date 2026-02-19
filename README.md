@@ -1,8 +1,10 @@
 # 📍 React Native Background Location
 
-[![npm version](https://badge.fury.io/js/react-native-background-location.svg)](https://badge.fury.io/js/react-native-background-location)
+[![npm version](https://img.shields.io/npm/v/@suhatakbulak/react-native-background-location.svg)](https://www.npmjs.com/package/@suhatakbulak/react-native-background-location)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Platform: Android iOS](https://img.shields.io/badge/Platform-Android%20%7C%20iOS-green.svg)](https://www.react-native.dev)
+
+**npm:** [@suhatakbulak/react-native-background-location](https://www.npmjs.com/package/@suhatakbulak/react-native-background-location)
 
 **Production-ready** background location tracking library for React Native with industry-standard architecture (locking, batch sync, autoSync).
 
@@ -65,9 +67,9 @@
 With React Native 0.60+, **autolink** handles native linking. No manual steps required.
 
 ```bash
-npm install react-native-background-location
+npm install @suhatakbulak/react-native-background-location
 # or
-yarn add react-native-background-location
+yarn add @suhatakbulak/react-native-background-location
 ```
 
 #### Android
@@ -101,7 +103,7 @@ npx react-native run-ios
 ```gradle
 include ':react-native-background-location'
 project(':react-native-background-location').projectDir =
-    new File(rootProject.projectDir, '../node_modules/react-native-background-location/android')
+    new File(rootProject.projectDir, '../node_modules/@suhatakbulak/react-native-background-location/android')
 ```
 
 **app/build.gradle**:
@@ -129,7 +131,7 @@ protected List<ReactPackage> getPackages() {
 ## 🚀 Quick Start
 
 ```typescript
-import BackgroundLocation, { DESIRED_ACCURACY_HIGH, DESIRED_ACCURACY_MEDIUM, DESIRED_ACCURACY_LOW } from 'react-native-background-location';
+import BackgroundLocation, { DESIRED_ACCURACY_HIGH, DESIRED_ACCURACY_MEDIUM, DESIRED_ACCURACY_LOW } from '@suhatakbulak/react-native-background-location';
 
 // 1. Configure
 const config = {
@@ -191,7 +193,7 @@ await BackgroundLocation.stop();
 Initializes and configures the plugin.
 
 ```typescript
-import BackgroundLocation, { DESIRED_ACCURACY_HIGH, DESIRED_ACCURACY_MEDIUM, DESIRED_ACCURACY_LOW } from 'react-native-background-location';
+import BackgroundLocation, { DESIRED_ACCURACY_HIGH, DESIRED_ACCURACY_MEDIUM, DESIRED_ACCURACY_LOW } from '@suhatakbulak/react-native-background-location';
 
 const state = await BackgroundLocation.ready({
   desiredAccuracy: DESIRED_ACCURACY_HIGH, // LOW (1000m), MEDIUM (100m), HIGH (10m)

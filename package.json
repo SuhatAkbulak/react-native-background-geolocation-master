@@ -1,15 +1,15 @@
 {
-  "name": "react-native-background-location",
+  "name": "@suhatakbulak/react-native-background-location",
   "version": "1.0.0",
   "description": "Cross-platform, Transistorsoft-style background location tracking for React Native",
   "main": "src/index.tsx",
   "types": "src/index.tsx",
   "license": "MIT",
-  "author": "Your Name <your.email@example.com>",
-  "homepage": "https://github.com/yourname/react-native-background-location",
+  "author": "Suhat Akbulak",
+  "homepage": "https://github.com/SuhatAkbulak/react-native-background-geolocation-master",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourname/react-native-background-location.git"
+    "url": "https://github.com/SuhatAkbulak/react-native-background-geolocation-master.git"
   },
   "keywords": [
     "react-native",
@@ -33,9 +33,7 @@
     "@types/react-native": "*",
     "typescript": "^5.0.0"
   },
-  "scripts": {
-    "prepare": "cd android && ./gradlew clean"
-  }
+  "scripts": {}
 }
 
 
