@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig",
+  "exclude": [
+    "example",
+    "node_modules"
+  ]
+}
+
+
+
