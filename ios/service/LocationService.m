@@ -58,6 +58,8 @@ static NSString *const kBackgroundFetchIdentifier = @"com.rnbackgroundlocation.f
 // TRANSISTORSOFT PATTERN: Stationary Region Monitoring - Kullanıcı hareket ettiğinde algıla
 @property (nonatomic, strong) CLCircularRegion *stationaryRegion; // Stationary region
 @property (nonatomic, assign) BOOL isMonitoringStationaryRegion; // Stationary region monitoring aktif mi?
+/// Debug bildirim throttle: konum bildirimi en fazla bu aralıkla (saniye)
+@property (nonatomic, assign) NSTimeInterval lastDebugLocationNotificationTime;
 @end
 
 @implementation LocationService
@@ -1624,31 +1626,31 @@ static NSString *const kBackgroundFetchIdentifier = @"com.rnbackgroundlocation.f
             // Event autorelease pool'dan çıkınca otomatik release edilecek
         }
         
-        // Debug notification for location update ()
+        // Debug notification for location update – throttle: en fazla 10 saniyede bir
         if (self.config.debug) {
-            NSString *activity = @"unknown";
-            CMMotionActivity *lastActivity = [ActivityRecognitionService getLastActivity];
-            if (lastActivity) {
-                activity = [self getActivityName:lastActivity];
+            NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
+            if (now - self.lastDebugLocationNotificationTime >= 10.0) {
+                self.lastDebugLocationNotificationTime = now;
+                NSString *activity = @"unknown";
+                CMMotionActivity *lastActivity = [ActivityRecognitionService getLastActivity];
+                if (lastActivity) {
+                    activity = [self getActivityName:lastActivity];
+                }
+                MotionDetectorService *motionDetector = [MotionDetectorService sharedInstance];
+                NSString *motionTypeInfo = @"";
+                if (motionDetector.motionTypeName && motionDetector.motionTypeName.length > 0) {
+                    NSInteger confidence = [motionDetector motionActivityConfidence];
+                    motionTypeInfo = [NSString stringWithFormat:@" | 🎯 Motion: %@ (%ld%%)", motionDetector.motionTypeName, (long)confidence];
+                }
+                NSString *debugBody = [NSString stringWithFormat:@"📍 %.6f,%.6f\n🎯 Accuracy: %.1fm | 🚶 %@%@ | 📏 Odometer: %.2f km",
+                                       location.coordinate.latitude,
+                                       location.coordinate.longitude,
+                                       location.horizontalAccuracy,
+                                       activity,
+                                       motionTypeInfo,
+                                       self.config.odometer];
+                [self showDebugNotification:@"📍 Location Update" body:debugBody];
             }
-            
-            // SOMotionDetector benzeri motionType bilgisi ekle
-            MotionDetectorService *motionDetector = [MotionDetectorService sharedInstance];
-            NSString *motionTypeInfo = @"";
-            if (motionDetector.motionTypeName && motionDetector.motionTypeName.length > 0) {
-                NSInteger confidence = [motionDetector motionActivityConfidence];
-                motionTypeInfo = [NSString stringWithFormat:@" | 🎯 Motion: %@ (%ld%%)", motionDetector.motionTypeName, (long)confidence];
-            }
-            
-            NSString *debugBody = [NSString stringWithFormat:@"📍 %.6f,%.6f\n🎯 Accuracy: %.1fm | 🚶 %@%@ | 📏 Odometer: %.2f km",
-                                   location.coordinate.latitude,
-                                   location.coordinate.longitude,
-                                   location.horizontalAccuracy,
-                                   activity,
-                                   motionTypeInfo,
-                                   self.config.odometer];
-            
-            [self showDebugNotification:@"📍 Location Update" body:debugBody];
         }
         
     }
@@ -1902,8 +1904,11 @@ static NSString *const kBackgroundFetchIdentifier = @"com.rnbackgroundlocation.f
                 content.sound = nil; // Silent
                 content.badge = @([self.database count]);
                 
-                // Use unique identifier for each notification (so they stack)
-                NSString *identifier = [NSString stringWithFormat:@"DebugNotification_%ld", (long)([[NSDate date] timeIntervalSince1970] * 1000)];
+                // Sabit ID: aynı başlık = aynı bildirim güncellenir, yığılma olmaz
+                NSString *safeTitle = [title stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+                safeTitle = [[safeTitle componentsSeparatedByCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]] componentsJoinedByString:@""];
+                if (safeTitle.length == 0) { safeTitle = @"Debug"; }
+                NSString *identifier = [NSString stringWithFormat:@"DebugNotification_%@", safeTitle];
                 
                 UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:identifier
                                                                                       content:content

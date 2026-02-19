@@ -83,6 +83,10 @@ public class LocationService extends Service {
     private final java.util.Set<String> processedLocationKeys = new java.util.HashSet<>();
     private static final int MAX_PROCESSED_KEYS = 200;
     
+    // Debug bildirim throttle: en fazla 10 saniyede bir güncelle (konum çok değişmese bile spam önleme)
+    private long lastDebugNotificationUpdateTime = 0;
+    private static final long DEBUG_NOTIFICATION_THROTTLE_MS = 10_000;
+    
     @Override
     public void onCreate() {
         super.onCreate();
@@ -876,17 +880,21 @@ public class LocationService extends Service {
                 performStopDetection(location);
             }
             
-            // Update notification if debug mode (dynamic notification)
+            // Update notification if debug mode – throttle: en fazla 10 saniyede bir
             if (config.debug && config.foregroundService) {
-                try {
-                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    if (notificationManager != null) {
-                        ForegroundNotification.createNotificationChannel(this, false);
-                        Notification notification = ForegroundNotification.build(this);
-                        notificationManager.notify(NOTIFICATION_ID, notification);
+                long now = System.currentTimeMillis();
+                if (now - lastDebugNotificationUpdateTime >= DEBUG_NOTIFICATION_THROTTLE_MS) {
+                    lastDebugNotificationUpdateTime = now;
+                    try {
+                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                        if (notificationManager != null) {
+                            ForegroundNotification.createNotificationChannel(this, false);
+                            Notification notification = ForegroundNotification.build(this);
+                            notificationManager.notify(NOTIFICATION_ID, notification);
+                        }
+                    } catch (Exception e) {
+                        LogHelper.e(TAG, "Failed to update notification: " + e.getMessage(), e);
                     }
-                } catch (Exception e) {
-                    LogHelper.e(TAG, "Failed to update notification: " + e.getMessage(), e);
                 }
             }
             
