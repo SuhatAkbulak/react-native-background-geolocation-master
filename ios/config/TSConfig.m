@@ -94,9 +94,12 @@ static NSString *const KEY_CONFIG = @"config";
 
 @implementation TSConfig
 
-// Explicit ivar names so underscore-named properties use _title (not __title)
+// Explicit ivar names so underscore-named properties use _ivar (not __ivar)
 @synthesize _title = _title, _text = _text, _smallIcon = _smallIcon, _largeIcon = _largeIcon;
 @synthesize _color = _color, _priority = _priority, _channelName = _channelName, _channelId = _channelId;
+@synthesize _notificationTitle = _notificationTitle, _notificationText = _notificationText;
+@synthesize _notificationIcon = _notificationIcon, _notificationColor = _notificationColor;
+@synthesize _notificationPriority = _notificationPriority, _notificationChannelName = _notificationChannelName, _notificationChannelId = _notificationChannelId;
 
 + (instancetype)sharedInstance {
     static TSConfig *instance = nil;
