@@ -1087,7 +1087,7 @@ public class LocationService extends Service {
             
             // Debug bilgilerini text'e ekle
             text = String.format("%s\n📍 Locations: %d | 🔓 Unlocked: %d | 🚶 Activity: %s | 📏 Odometer: %.2f km",
-                config.notificationText,
+                config.text,
                 locationCount,
                 unlockedCount,
                 activity,
@@ -1104,8 +1104,8 @@ public class LocationService extends Service {
         
         // Set color
         try {
-            if (!config.notificationColor.isEmpty()) {
-                builder.setColor(Color.parseColor(config.notificationColor));
+            if (!config.color.isEmpty()) {
+                builder.setColor(Color.parseColor(config.color));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1159,7 +1159,7 @@ public class LocationService extends Service {
      * Get notification priority from config
      */
     private int getPriorityFromConfig() {
-        switch (config.notificationPriority) {
+        switch (config.priority) {
             case -2: return NotificationCompat.PRIORITY_MIN;
             case -1: return NotificationCompat.PRIORITY_LOW;
             case 0: return NotificationCompat.PRIORITY_DEFAULT;

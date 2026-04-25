@@ -76,10 +76,10 @@ public class TSLocalNotification {
         if (Config.isLoaded()) {
             Config config = Config.getInstance(context);
             
-            // Check notificationIcon field
-            if (config.notificationIcon != null && !config.notificationIcon.isEmpty()) {
+            // Check smallIcon field (legacy notificationIcon mapped in Config)
+            if (config.smallIcon != null && !config.smallIcon.isEmpty()) {
                 int iconId = context.getResources().getIdentifier(
-                    config.notificationIcon, 
+                    config.smallIcon,
                     "drawable", 
                     context.getPackageName()
                 );
@@ -121,8 +121,8 @@ public class TSLocalNotification {
         if (Config.isLoaded()) {
             Config config = Config.getInstance(context);
             
-            if (config.notificationChannelId != null && !config.notificationChannelId.isEmpty()) {
-                return config.notificationChannelId;
+            if (config.channelId != null && !config.channelId.isEmpty()) {
+                return config.channelId;
             }
         }
         return "";
